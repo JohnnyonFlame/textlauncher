@@ -169,18 +169,23 @@ void WAD_RebuildPath()
 	WAD_AddPathFmt("/usr/local/share/games/doom");
 	WAD_AddPathFmt("/usr/local/share/doom");
 
-	WAD_AddPathFmt("%s/.odamex", getenv("HOME"));
+	if (getenv("HOME")) {
+		WAD_AddPathFmt("%s/.odamex", getenv("HOME"));
+		WAD_AddPathFmt(getenv("HOME"));
+	}
 
-	WAD_AddPathFmt(getenv("DOOMWADDIR"));
-	WAD_AddPathFmt(getenv("DOOMWADPATH"));
-	WAD_AddPathFmt(getenv("HOME"));
+	if (getenv("DOOMWADDIR"))
+		WAD_AddPathFmt(getenv("DOOMWADDIR"));
+
+	if (getenv("DOOMWADPATH"))
+		WAD_AddPathFmt(getenv("DOOMWADPATH"));
 
 	WAD_BuildWadList();
 
+	int i;
 	if (!iwad_dropdown) {
 		iwad_dropdown = (char**)malloc(sizeof(*iwad_dropdown) * iwad_list.size());
 
-		int i;
 		for (i=0; i<iwad_list.size(); i++)
 		{
 			iwad_dropdown[i] = strdup(basename(iwad_list.at(i).fname));
