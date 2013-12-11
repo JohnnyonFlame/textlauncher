@@ -85,6 +85,7 @@ static void *thread_readlogs(void *user_data)
 	}
 
 	FILE *log = fopen(ODASRV_LOG, "r");
+
 	while (!log && t_status)
 	{
 		log = fopen(ODASRV_LOG, "r");
@@ -99,11 +100,14 @@ static void *thread_readlogs(void *user_data)
 	fcntl(fileno(log), F_SETFD, fcntl(fileno(log), F_GETFD, 0) | O_NONBLOCK);
 	fseek(log, 0, SEEK_END);
 
+	int fd = fileno(log);
+
 	//While thread is alive
 	while (t_status)
 	{
 		char c;
-		int size = fread(&c, 1, 1, log);
+		int size = read(fd, &c, 1);
+
 		if (size>0)
 		{
 			if ((c == '\n') || (n == sizeof(buffer) - 1))
@@ -154,8 +158,6 @@ static void *thread_readlogs(void *user_data)
 
 				txt_scrollpane_t* pane = (txt_scrollpane_t*)table->widget.parent;
 				pane->y++;
-
-				usleep(25000);
 			}
 			else
 				buffer[n++] = c; // store char, since not fully loaded or newline

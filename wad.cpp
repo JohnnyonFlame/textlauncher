@@ -118,6 +118,30 @@ static void WAD_ParseWadlist(vector<wad_t> wad_list)
 	}
 }
 
+static int WAD_IsValidWAD(char *wad)
+{
+	char *INVALID_WADS[] =
+	{
+			"hacx.wad",
+			"heretic.wad",
+			"hexdd.wad",
+			"hexen.wad",
+			"strife1.wad",
+			"voices.wad",
+
+			NULL
+	};
+
+	int i;
+	for (i=0; INVALID_WADS[i] != NULL; i++)
+	{
+		if (!strcasecmp(wad, INVALID_WADS[i]))
+			return 0;
+	}
+
+	return 1;
+}
+
 void WAD_BuildWadList()
 {
 	int i;
@@ -132,20 +156,11 @@ void WAD_BuildWadList()
 			while ((ent = readdir(dir))) {
 				char *ext = strrchr(ent->d_name, '.');
 				if (ext) {
-					char *ext_buf = strdup(ext);
-
-					char *n;
-					for (n = ext_buf; *n != '\0'; n++)
+					if (!strcasecmp(ext, ".WAD"))
 					{
-						*n = toupper(*n);
+						if (WAD_IsValidWAD(basename(ent->d_name)))
+							WAD_ProcessWAD("%s/%s", path, ent->d_name);
 					}
-
-					if (!strcmp(ext_buf, ".WAD"))
-					{
-						WAD_ProcessWAD("%s/%s", path, ent->d_name);
-					}
-
-					free(ext_buf);
 				}
 			}
 			closedir(dir);
