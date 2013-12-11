@@ -151,4 +151,7 @@
 #define KEY_HAT8				0x172
 #define NUM_KEYS				0x174
 
+#define KEY_ABUTTON KEY_RCTRL
+#define KEY_BBUTTON KEY_RALT
+
 #endif	// __DOOMKEYS_H__

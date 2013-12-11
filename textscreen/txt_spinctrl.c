@@ -268,13 +268,13 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
 
     if (spincontrol->editing)
     {
-        if (key == KEY_ENTER)
+        if (key == KEY_ABUTTON)
         {
             FinishEditing(spincontrol);
             return 1;
         }
 
-        if (key == KEY_ESCAPE)
+        if (key == KEY_BBUTTON)
         {
             // Abort without saving value
             spincontrol->editing = 0;
@@ -297,7 +297,7 @@ static int TXT_SpinControlKeyPress(TXT_UNCAST_ARG(spincontrol), int key)
     {
         // Non-editing mode
 
-        if (key == KEY_ENTER)
+        if (key == KEY_ABUTTON)
         {
             spincontrol->editing = 1;
             strcpy(spincontrol->buffer, "");

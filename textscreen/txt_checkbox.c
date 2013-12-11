@@ -89,7 +89,7 @@ static int TXT_CheckBoxKeyPress(TXT_UNCAST_ARG(checkbox), int key)
 {
     TXT_CAST_ARG(txt_checkbox_t, checkbox);
 
-    if (key == KEY_ENTER || key == ' ')
+    if (key == KEY_ABUTTON || key == ' ')
     {
         *checkbox->variable = !*checkbox->variable;
         TXT_EmitSignal(checkbox, "changed");

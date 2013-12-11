@@ -22,29 +22,33 @@
 #ifndef TEXTSCREEN_H
 #define TEXTSCREEN_H
 
-extern "C"
-{
+#ifdef __cplusplus 
+extern "C" {
+#endif
 
-	#include "doomkeys.h"
-	#include "txt_main.h"
+#include "doomkeys.h"
+#include "txt_main.h"
 
-	#include "txt_button.h"
-	#include "txt_checkbox.h"
-	#include "txt_desktop.h"
-	#include "txt_dropdown.h"
-	#include "txt_inputbox.h"
-	#include "txt_label.h"
-	#include "txt_radiobutton.h"
-	#include "txt_scrollpane.h"
-	#include "txt_separator.h"
-	#include "txt_spinctrl.h"
-	#include "txt_strut.h"
-	#include "txt_table.h"
-	#include "txt_widget.h"
-	#include "txt_window_action.h"
-	#include "txt_window.h"
+#include "txt_button.h"
+#include "txt_checkbox.h"
+#include "txt_desktop.h"
+#include "txt_dropdown.h"
+#include "txt_inputbox.h"
+#include "txt_label.h"
+#include "txt_radiobutton.h"
+#include "txt_scrollpane.h"
+#include "txt_separator.h"
+#include "txt_spinctrl.h"
+#include "txt_strut.h"
+#include "txt_table.h"
+#include "txt_widget.h"
+#include "txt_window_action.h"
+#include "txt_fileselect.h"
+#include "txt_window.h"
 
+#ifdef __cplusplus 
 }
+#endif
 
 #endif /* #ifndef TEXTSCREEN_H */
 

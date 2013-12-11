@@ -4,8 +4,8 @@ CXXFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -fpermissive -Wno-write-strings 
 LDFLAGS=
 LIBS=-lSDL -lpthread
 
-CC=gcc
-CXX=g++
+CC=mipsel-linux-gcc
+CXX=mipsel-linux-g++
 
 SRC= 	c_cvars.cpp \
 		cl_cvarlist.cpp \

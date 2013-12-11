@@ -135,7 +135,7 @@ static void WindowSelectCallback(TXT_UNCAST_ARG(widget), TXT_UNCAST_ARG(window))
 {
     TXT_CAST_ARG(txt_window_t, window);
 
-    TXT_WidgetKeyPress(window, KEY_ENTER);
+    TXT_WidgetKeyPress(window, KEY_ABUTTON);
 }
 
 // An action with the name "close" the closes the window
@@ -144,7 +144,7 @@ txt_window_action_t *TXT_NewWindowEscapeAction(txt_window_t *window)
 {
     txt_window_action_t *action;
 
-    action = TXT_NewWindowAction(KEY_ESCAPE, "Close");
+    action = TXT_NewWindowAction(KEY_BBUTTON, "Close");
     TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
     return action;
@@ -156,7 +156,7 @@ txt_window_action_t *TXT_NewWindowAbortAction(txt_window_t *window)
 {
     txt_window_action_t *action;
 
-    action = TXT_NewWindowAction(KEY_ESCAPE, "Abort");
+    action = TXT_NewWindowAction(KEY_BBUTTON, "Abort");
     TXT_SignalConnect(action, "pressed", WindowCloseCallback, window);
 
     return action;
@@ -166,7 +166,7 @@ txt_window_action_t *TXT_NewWindowSelectAction(txt_window_t *window)
 {
     txt_window_action_t *action;
 
-    action = TXT_NewWindowAction(KEY_ENTER, "Select");
+    action = TXT_NewWindowAction(KEY_ABUTTON, "Select");
     TXT_SignalConnect(action, "pressed", WindowSelectCallback, window);
 
     return action;

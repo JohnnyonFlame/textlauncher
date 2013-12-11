@@ -502,3 +502,24 @@ void TXT_SetWindowFocus(txt_window_t *window, int focused)
     TXT_SetWidgetFocus(window, focused);
 }
 
+txt_window_t *TXT_MessageBox(char *title, char *message, ...)
+{
+    txt_window_t *window;
+    char buf[256];
+    va_list args;
+
+    va_start(args, message);
+    vsnprintf(buf, sizeof(buf), message, args);
+    va_end(args);
+
+    window = TXT_NewWindow(title);
+    TXT_AddWidget(window, TXT_NewLabel(buf));
+
+    TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
+    TXT_SetWindowAction(window, TXT_HORIZ_CENTER,
+                        TXT_NewWindowEscapeAction(window));
+    TXT_SetWindowAction(window, TXT_HORIZ_RIGHT, NULL);
+
+    return window;
+}
+

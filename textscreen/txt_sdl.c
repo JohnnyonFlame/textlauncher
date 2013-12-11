@@ -158,6 +158,7 @@ static void ChooseFont(void)
     // Allow normal selection to be overridden from an environment variable:
 
     env = getenv("TEXTSCREEN_FONT");
+    //env = "small";
 
     if (env != NULL)
     {
@@ -224,6 +225,8 @@ int TXT_Init(void)
 
     screen = SDL_SetVideoMode(TXT_SCREEN_W * font->w,
                               TXT_SCREEN_H * font->h, 8, 0);
+
+    printf("sdl: %i %i\n", TXT_SCREEN_W * font->w, TXT_SCREEN_H * font->h);
 
     if (screen == NULL)
         return 0;
@@ -653,14 +656,14 @@ static const char *SpecialKeyName(int key)
 {
     switch (key)
     {
-        case ' ':             return "SPACE";
+        case ' ':             return "Y";
         case KEY_RIGHTARROW:  return "RIGHT";
         case KEY_LEFTARROW:   return "LEFT";
         case KEY_UPARROW:     return "UP";
         case KEY_DOWNARROW:   return "DOWN";
-        case KEY_ESCAPE:      return "ESC";
-        case KEY_ENTER:       return "ENTER";
-        case KEY_TAB:         return "TAB";
+        case KEY_ESCAPE:      return "SELECT";
+        case KEY_ENTER:       return "START";
+        case KEY_TAB:         return "L";
         case KEY_F1:          return "F1";
         case KEY_F2:          return "F2";
         case KEY_F3:          return "F3";
@@ -673,13 +676,13 @@ static const char *SpecialKeyName(int key)
         case KEY_F10:         return "F10";
         case KEY_F11:         return "F11";
         case KEY_F12:         return "F12";
-        case KEY_BACKSPACE:   return "BKSP";
+        case KEY_BACKSPACE:   return "R";
         case KEY_PAUSE:       return "PAUSE";
         case KEY_EQUALS:      return "EQUALS";
         case KEY_MINUS:       return "MINUS";
-        case KEY_RSHIFT:      return "SHIFT";
-        case KEY_RCTRL:       return "CTRL";
-        case KEY_RALT:        return "ALT";
+        case KEY_RSHIFT:      return "X";
+        case KEY_RCTRL:       return "A";
+        case KEY_RALT:        return "B";
         case KEY_CAPSLOCK:    return "CAPS";
         case KEY_SCRLCK:      return "SCRLCK";
         case KEY_HOME:        return "HOME";

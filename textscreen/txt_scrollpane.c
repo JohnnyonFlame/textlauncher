@@ -158,6 +158,18 @@ static void TXT_ScrollPaneSizeCalc(TXT_UNCAST_ARG(scrollpane))
     {
         ++scrollpane->widget.w;
     }
+
+    if (scrollpane->child != NULL)
+    {
+        if (scrollpane->child->w < scrollpane->w)
+        {
+            scrollpane->child->w = scrollpane->w;
+        }
+        if (scrollpane->child->h < scrollpane->h)
+        {
+            scrollpane->child->h = scrollpane->h;
+        }
+    }
 }
 
 static void TXT_ScrollPaneDrawer(TXT_UNCAST_ARG(scrollpane))
