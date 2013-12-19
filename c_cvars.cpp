@@ -4,6 +4,7 @@
 #include <string>
 
 #include "textscreen.h"
+#include "panel.h"
 #include "c_cvars.h"
 #include "wad.h"
 
@@ -163,6 +164,36 @@ static cvar_t* CVAR_FindByName(char *cvar, cvar_t* list)
 	return NULL;
 }
 
+static void UTIL_Tokenize(char *s, vector<string> &token)
+{
+	string str;
+
+	int quoted=0;
+
+	for (char *head = s;; head++ )
+	{
+		if ((((*head != ' ') && (*head != '\t')) || quoted) && (*head != '\0') && (*head != '\n') && (*head != '"'))
+				str += *head;
+		else
+		{
+			int wasquoted = quoted;
+
+			if (*head == '"')
+				quoted = !quoted;
+
+			if ((str.size() > 0) || wasquoted)
+			{
+				token.push_back(str);
+
+				str.clear();
+
+				if ((*head == '\0') || (*head == '\n'))
+					break;
+			}
+		}
+	}
+}
+
 static void CVAR_LoadCvars(char *file, ...)
 {
     va_list args;
@@ -180,33 +211,8 @@ static void CVAR_LoadCvars(char *file, ...)
 
     while (fgets(buffer, 128, f))
     {
-    	string str;
-    	std::vector<string> token;
-
-    	int quoted=0;
-
-    	for (head = &buffer[0];; head++ )
-    	{
-    		if ((((*head != ' ') && (*head != '\t')) || quoted) && (*head != '\0') && (*head != '\n') && (*head != '"'))
-    				str += *head;
-    		else
-    		{
-    			int wasquoted = quoted;
-
-				if (*head == '"')
-					quoted = !quoted;
-
-    			if ((str.size() > 0) || wasquoted)
-    			{
-    				token.push_back(str);
-
-    				str.clear();
-
-    				if ((*head == '\0') || (*head == '\n'))
-    					break;
-    			}
-    		}
-    	}
+    	vector<string> token;
+    	UTIL_Tokenize(buffer, token);
 
     	if ((token.size() >= 3) && (token.at(0) == "set"))
     	{
@@ -282,6 +288,21 @@ void CVAR_SaveSettings()
 
 		fclose(f);
 	}
+
+	snprintf(f_name, 4096, "%s%s", getenv("HOME"), "/.odamex/l_settings.cfg");
+	f = fopen(f_name, "w");
+	if (f)
+	{
+		char buffer[256];
+		snprintf(buffer, 256, "%s = %s\n", "port", server_port);
+		fputs(buffer, f);
+
+		snprintf(buffer, 256, "%s = %s\n", "iwad", iwad_dropdown[iwad_value]);
+		fputs(buffer, f);
+
+		fclose(f);
+	}
+
 }
 
 void CVAR_LoadSettings()
@@ -294,4 +315,57 @@ void CVAR_LoadSettings()
 
 	snprintf(f_name, 4096, "%s%s", getenv("HOME"), "/.odamex/l_odamex.cfg");
 	CVAR_LoadCvars(f_name, cl_mp_cvars, cl_macro_cvars, cl_misc_cvars, NULL);
+
+	snprintf(f_name, 4096, "%s%s", getenv("HOME"), "/.odamex/l_mapcycle.cfg");
+	f = fopen(f_name, "r");
+	if (f) {
+		char buffer[512];
+		while (fgets(buffer, 512, f))
+		{
+			vector<string> token;
+			UTIL_Tokenize(buffer, token);
+
+			if (token.size() > 2) { //three or more tokens
+				if (!strcasecmp(token.at(0).c_str(), "addmap")) {
+					for (int i = 2; i<token.size(); i++) {
+						MAP_MarkMapActive((char*)token.at(1).c_str(), basename(token.at(2).c_str()));
+					}
+				}
+			}
+		}
+		fclose(f);
+	}
+
+	snprintf(f_name, 4096, "%s%s", getenv("HOME"), "/.odamex/l_settings.cfg");
+	f = fopen(f_name, "r");
+	if (f) {
+		char buffer[512];
+		while (fgets(buffer, 512, f))
+		{
+			vector<string> token;
+			UTIL_Tokenize(buffer, token);
+
+			if (token.size() > 2) { //three or more tokens
+				if (!strcmp(token.at(0).c_str(), "port")) {
+					if (server_port)
+						free(server_port);
+
+					server_port = strdup(token.at(2).c_str());
+				} else if (!strcmp(token.at(0).c_str(), "iwad")) {
+					if (iwad_dropdown)
+					{
+						for (int i=0; i<max_iwad; i++)
+						{
+							if (!strcasecmp(token.at(2).c_str(), iwad_dropdown[i]))
+							{
+								iwad_value = i;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		fclose(f);
+	}
 }

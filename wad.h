@@ -40,4 +40,6 @@ void WAD_RebuildPath();
 void WAD_AddPathFmt(char *fmt, ...);
 void WAD_AddPathSeparator(char *waddirs, int separator);
 
+void MAP_MarkMapActive(char *map, char *wad);
+
 #endif /* WAD_H_ */

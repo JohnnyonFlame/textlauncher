@@ -246,3 +246,19 @@ void WAD_AddPathSeparator(char *waddirs, int separator)
 
 	wadpath_list.push_back(tail);
 }
+
+void MAP_MarkMapActive(char *map, char *wad)
+{
+	int i;
+	for (i=0; i<map_list.size(); i++)
+	{
+		if (!strcasecmp(map, map_list.at(i).name))
+		{
+			if (!strcasecmp(wad, map_list.at(i).wad))
+			{
+				map_list.at(i).active = 1;
+				break;
+			}
+		}
+	}
+}
