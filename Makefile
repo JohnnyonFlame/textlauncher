@@ -1,52 +1,71 @@
 TARGET=textlauncher
-CFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -Wno-write-strings -O2
-CXXFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -fpermissive -Wno-write-strings -O2
+
+# Platform related settings
+ifeq ($(PLATFORM), gcw)
+	CC=mipsel-linux-gcc
+	CXX=mipsel-linux-g++
+	
+	INCLUDE=-I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/ -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/SDL
+else
+	CC=gcc
+	CXX=g++
+	
+	INCLUDE=-I/usr/include/SDL -I. -I./textscreen/
+endif
+
+ifeq ($(BUILD), debug)
+	CFLAGS=-Wno-write-strings -O0 -ggdb
+	CXXFLAGS=$(CFLAGS) -fpermissive
+else
+	CFLAGS=-Wno-write-strings -O2
+	CXXFLAGS=$(CFLAGS) -fpermissive
+endif
+
 LDFLAGS=
 LIBS=-lSDL -lpthread
 
-CC=mipsel-linux-gcc
-CXX=mipsel-linux-g++
-
-SRC= 	c_cvars.cpp \
-		cl_cvarlist.cpp \
-		sv_cvarlist.cpp \
-		main.cpp \
-		network.cpp \
-		panel.cpp \
-		wad.cpp
-		
-SRC2=	textscreen/txt_radiobutton.c \
-		textscreen/txt_window_action.c \
-		textscreen/txt_io.c \
-		textscreen/txt_strut.c \
-		textscreen/txt_inputbox.c \
-		textscreen/txt_table.c \
-		textscreen/txt_dropdown.c \
-		textscreen/txt_desktop.c \
-		textscreen/txt_widget.c \
-		textscreen/txt_window.c \
-		textscreen/txt_scrollpane.c \
-		textscreen/txt_spinctrl.c \
-		textscreen/txt_separator.c \
-		textscreen/txt_button.c \
-		textscreen/txt_utf8.c \
-		textscreen/txt_sdl.c \
-		textscreen/txt_checkbox.c \
-		textscreen/txt_gui.c \
-		textscreen/txt_label.c
-
+SRC_COMMON= textscreen/txt_radiobutton.o \
+			textscreen/txt_window_action.o \
+			textscreen/txt_io.o \
+			textscreen/txt_strut.o \
+			textscreen/txt_inputbox.o \
+			textscreen/txt_table.o \
+			textscreen/txt_dropdown.o \
+			textscreen/txt_desktop.o \
+			textscreen/txt_widget.o \
+			textscreen/txt_window.o \
+			textscreen/txt_scrollpane.o \
+			textscreen/txt_spinctrl.o \
+			textscreen/txt_separator.o \
+			textscreen/txt_button.o \
+			textscreen/txt_utf8.o \
+			textscreen/txt_sdl.o \
+			textscreen/txt_checkbox.o \
+			textscreen/txt_gui.o \
+			textscreen/txt_label.o
+			
+SRC_MP = 	c_cvars.o \
+			cl_cvarlist.o \
+			sv_cvarlist.o \
+			mp_main.o \
+			network.o \
+			panel.o \
+			wad.o
+			
+SRC_SP =	sp_main.o \
+			wad.o
 	 
-OBJ= $(patsubst %.cpp,%.o,$(SRC))
-OBJ2= $(patsubst %.c,%.o,$(SRC2))
+# OBJ= $(patsubst %.cpp,%.o,$(SRC))
 
-all: $(OBJ) $(OBJ2)
-	$(CXX) $(LDFLAGS) -o $(TARGET) $(OBJ) $(OBJ2) $(LIBS)
+all: $(SRC_MP) $(SRC_SP) $(SRC_COMMON)
+	$(CXX) $(LDFLAGS) -o $(TARGET)-mp $(SRC_MP) $(SRC_COMMON) $(LIBS)
+	$(CXX) $(LDFLAGS) -o $(TARGET)-sp $(SRC_SP) $(SRC_COMMON) $(LIBS)
 	
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(INCLUDE) $(CXXFLAGS) -c $< -o $@
 	
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(INCLUDE) $(CFLAGS) -c $< -o $@
 	
 clean:
-	@rm -rf $(TARGET) $(OBJ) $(OBJ2)
+	@rm -rf $(TARGET)-* $(SRC_MP) $(SRC_SP) $(SRC_COMMON)

@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <SDL.h>
 #include "textscreen.h"
 
 #include "c_cvars.h"
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    SDL_ShowCursor(0);
+
     WAD_RebuildPath();
     CVAR_LoadSettings();
 
@@ -49,7 +52,7 @@ int main(int argc, char *argv[])
 
     //NET_NetDiscoveryMenu();
 
-    window = TXT_NewWindow("New Game");
+    window = TXT_NewWindow("Multi Player");
     TXT_AddWidgets(window,
     		TXT_NewButton2("Configure Player Settings", CVAR_MenuFromList, cl_mp_cvars),
     		TXT_NewButton2("Configure Player Macros", CVAR_MenuFromList, cl_macro_cvars),
