@@ -1,11 +1,11 @@
 TARGET=textlauncher
-CFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -Wno-write-strings -O0 -ggdb
-CXXFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -fpermissive -Wno-write-strings -O0 -ggdb
+CFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -Wno-write-strings -O2
+CXXFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -fpermissive -Wno-write-strings -O2
 LDFLAGS=
 LIBS=-lSDL -lpthread
 
-CC=gcc
-CXX=g++
+CC=mipsel-linux-gcc
+CXX=mipsel-linux-g++
 
 SRC= 	c_cvars.cpp \
 		cl_cvarlist.cpp \
