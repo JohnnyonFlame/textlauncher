@@ -169,6 +169,40 @@ static void *thread_readlogs(void *user_data)
 	return NULL;
 }
 
+static char *cmd_input = strdup("");
+static void server_inputcmd_done(TXT_UNCAST_ARG(widget), void *user_data)
+{
+	txt_window_t *window = (txt_window_t*)user_data;
+	if (cmd_input && (strlen(cmd_input) > 0)) {
+		int pipe = open(ODASRV_PIPE, O_WRONLY | O_NONBLOCK);
+
+		if (pipe > 0)
+		{
+			write(pipe, cmd_input, strlen(cmd_input));
+			write(pipe, "\n", 1);
+			close(pipe);
+		}
+	}
+
+	TXT_CloseWindow(window);
+}
+
+static void server_inputcmd(TXT_UNCAST_ARG(widget), void *user_data)
+{
+	txt_window_t *dialog;
+	txt_table_t *table;
+
+	dialog = TXT_NewWindow("Input Command");
+	table =  TXT_NewTable(2);
+
+	TXT_AddWidgets(table, TXT_NewLabel("] "), TXT_NewInputBox(&cmd_input, 60), NULL);
+	TXT_AddWidget(dialog, table);
+
+	txt_window_action_t* act;
+	TXT_SignalConnect(act = TXT_NewWindowAction(KEY_SPACE, "Done"), "pressed", server_inputcmd_done, dialog);
+	TXT_SetWindowAction(dialog, TXT_HORIZ_RIGHT, act);
+}
+
 void config_server(TXT_UNCAST_ARG(widget), void *user_data)
 {
 	extern vector<map_t> map_list; /* internal wads */
@@ -211,6 +245,10 @@ void serverpanel(TXT_UNCAST_ARG(widget), void *user_data)
 
 	dialog = TXT_NewWindow("Server Console");
 	table = TXT_NewTable(1);
+
+	txt_window_action_t* act;
+	TXT_SignalConnect(act = TXT_NewWindowAction(KEY_SPACE, "Input Command"), "pressed", server_inputcmd, NULL);
+	TXT_SetWindowAction(dialog, TXT_HORIZ_CENTER, act);
 
 	TXT_SignalConnect(dialog, "closed", signal_closed, NULL);
 

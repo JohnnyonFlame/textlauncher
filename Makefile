@@ -1,6 +1,6 @@
 TARGET=textlauncher
-CFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -Wno-write-strings -O2
-CXXFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -fpermissive -Wno-write-strings -O2
+CFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -Wno-write-strings -O0 -ggdb
+CXXFLAGS=-I/usr/include/SDL -I. -I./textscreen/ -fpermissive -Wno-write-strings -O0 -ggdb
 LDFLAGS=
 LIBS=-lSDL -lpthread
 
