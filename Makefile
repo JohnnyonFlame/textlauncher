@@ -42,7 +42,8 @@ SRC_COMMON= textscreen/txt_radiobutton.o \
 			textscreen/txt_sdl.o \
 			textscreen/txt_checkbox.o \
 			textscreen/txt_gui.o \
-			textscreen/txt_label.o
+			textscreen/txt_label.o \
+			common.o
 			
 SRC_MP = 	c_cvars.o \
 			cl_cvarlist.o \
@@ -58,8 +59,8 @@ SRC_SP =	sp_main.o \
 # OBJ= $(patsubst %.cpp,%.o,$(SRC))
 
 all: $(SRC_MP) $(SRC_SP) $(SRC_COMMON)
-	$(CXX) $(LDFLAGS) -o $(TARGET)-mp $(SRC_MP) $(SRC_COMMON) $(LIBS)
-	$(CXX) $(LDFLAGS) -o $(TARGET)-sp $(SRC_SP) $(SRC_COMMON) $(LIBS)
+	$(CXX) $(LDFLAGS) -o $(TARGET)-mp $(SRC_COMMON) $(SRC_MP) $(LIBS)
+	$(CXX) $(LDFLAGS) -o $(TARGET)-sp $(SRC_COMMON) $(SRC_SP) $(LIBS)
 	
 %.o: %.cpp
 	$(CXX) $(INCLUDE) $(CXXFLAGS) -c $< -o $@

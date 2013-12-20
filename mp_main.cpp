@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "textscreen.h"
 
+#include "common.h"
 #include "c_cvars.h"
 #include "network.h"
 #include "panel.h"
@@ -19,20 +20,6 @@ static void joingame(TXT_UNCAST_ARG(widget), void *user_data)
     		TXT_NewButton2("Join Internet Servers", NET_NetDiscoveryMenu, NULL),
     		TXT_NewButton2("Join Manually", NET_ManualMenu, NULL),
     		NULL);
-}
-
-static int systemf(const char *fmt, ...)
-{
-        char __sys[1024];
-        int ret_code;
-        va_list args;
-        va_start(args, fmt);
-        //TODO: CODE
-                vsnprintf(__sys, 1023, fmt, args);
-                ret_code = system(__sys);
-        va_end(args);
-
-        return ret_code;
 }
 
 int main(int argc, char *argv[])
