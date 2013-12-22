@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include "wad.h"
+#include "iwad_selector.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,13 +18,15 @@ int main(int argc, char *argv[])
 
     WAD_RebuildPath();
 
+    IWAD_CreateMenu();
+
     TXT_GUIMainLoop();
     TXT_Shutdown();
 
-    /*if (launchgame_cmdline_addr)
+    if (iwad_launch_params)
     {
-    	systemf("./odamex -config %s/.odamex/l_odamex.cfg -connect %s", getenv("HOME"), launchgame_cmdline_addr);
-    }*/
+    	systemf("./odamex %s", iwad_launch_params);
+    }
 
 	return 0;
 }

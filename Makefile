@@ -54,6 +54,7 @@ SRC_MP = 	c_cvars.o \
 			wad.o
 			
 SRC_SP =	sp_main.o \
+			iwad_selector.o \
 			wad.o
 	 
 # OBJ= $(patsubst %.cpp,%.o,$(SRC))

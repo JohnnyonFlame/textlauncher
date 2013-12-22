@@ -54,7 +54,7 @@ static void *thread_spawnserver(void *user_data)
 	char buffer[512];
 	snprintf(buffer, 511, "./odasrv -config %s/.odamex/l_odasrv.cfg -iwad %s +exec %s/.odamex/l_mapcycle.cfg +logfile %s -fork %s -port %s %s < %s",
 			getenv("HOME"), /*-config*/
-			iwad_dropdown[iwad_value], /*-iwad*/
+			wad_iwad_s[wad_iwad_v], /*-iwad*/
 			getenv("HOME"), /*-exec*/
 			ODASRV_LOG, /*+logfile*/
 			ODASRV_PID, /*-fork*/
@@ -214,7 +214,7 @@ void config_server(TXT_UNCAST_ARG(widget), void *user_data)
 	table =  TXT_NewTable(2);
 	mapcycle = TXT_NewTable(1);
 
-	TXT_AddWidgets(table, TXT_NewLabel("IWad:      "), TXT_NewDropdownList(&iwad_value, iwad_dropdown, max_iwad), NULL);
+	TXT_AddWidgets(table, TXT_NewLabel("IWad:      "), TXT_NewDropdownList(&wad_iwad_v, wad_iwad_s, wad_iwad_c), NULL);
 	TXT_AddWidgets(table, TXT_NewLabel("UDP Port:  "), TXT_NewInputBox(&server_port, 6), NULL);
 	TXT_AddWidgets(table, TXT_NewLabel("CMD Line:  "), TXT_NewInputBox(&cmdline, 32), NULL);
 

@@ -90,7 +90,7 @@ static int TXT_RadioButtonKeyPress(TXT_UNCAST_ARG(radiobutton), int key)
 {
     TXT_CAST_ARG(txt_radiobutton_t, radiobutton);
 
-    if (key == KEY_ABUTTON || key == ' ')
+    if (key == KEY_ABUTTON)
     {
         if (*radiobutton->variable != radiobutton->value)
         {

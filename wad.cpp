@@ -20,9 +20,10 @@ vector<wad_t> pwad_list; /* patch wads */
 
 vector<map_t> map_list;
 
-int max_iwad = 0;
-int iwad_value = 0;
-char **iwad_dropdown = NULL;
+//TODO:: Move these out of here.
+int wad_iwad_c = 0;
+int wad_iwad_v = 0;
+char **wad_iwad_s = NULL;
 
 static void WAD_ClearList(vector<wad_t> wad_vec)
 {
@@ -76,6 +77,7 @@ void WAD_ProcessWAD(char *fmt, ...)
 					wad = &pwad_list.back();
 				}
 
+				wad->active = 0;
 				/* we gotta know the name/path of the wad amirite */
 				wad->fname = strdup(buffer);
     		}
@@ -128,6 +130,7 @@ static int WAD_IsValidWAD(char *wad)
 			"hexen.wad",
 			"strife1.wad",
 			"voices.wad",
+			"odamex.wad",
 
 			NULL
 	};
@@ -198,16 +201,16 @@ void WAD_RebuildPath()
 	WAD_BuildWadList();
 
 	int i;
-	if (!iwad_dropdown) {
-		iwad_dropdown = (char**)malloc(sizeof(*iwad_dropdown) * iwad_list.size());
+	if (!wad_iwad_s) {
+		wad_iwad_s = (char**)malloc(sizeof(*wad_iwad_s) * iwad_list.size());
 
 		for (i=0; i<iwad_list.size(); i++)
 		{
-			iwad_dropdown[i] = strdup(basename(iwad_list.at(i).fname));
+			wad_iwad_s[i] = strdup(basename(iwad_list.at(i).fname));
 		}
 	}
 
-	max_iwad = iwad_list.size();
+	wad_iwad_c = iwad_list.size();
 }
 
 void WAD_AddPathFmt(char *fmt, ...)
@@ -261,4 +264,41 @@ void MAP_MarkMapActive(char *map, char *wad)
 			}
 		}
 	}
+}
+
+char **MAP_PopulateList(char *wad, int &map_count)
+{
+	map_count = 0;
+
+	//pass 1- count maps
+	for (int i=0; i<map_list.size(); i++)
+	{
+		if (!strcasecmp(map_list.at(i).wad, wad))
+			map_count++;
+	}
+
+
+	/*
+	 * <off> 0
+	 * map01 1
+	 * map02 2
+	 */
+
+	//intermission: allocate list
+	char **list = (char**)malloc(sizeof(char*) * (map_count+2));
+
+	//pass 2- populate list
+	list[0] = strdup("<off>");
+	list[map_count+1] = NULL;
+
+	for (int i=0, l=1; i<map_list.size(); i++)
+	{
+		if (!strcasecmp(map_list.at(i).wad, wad)) {
+			list[l++] = strdup(map_list.at(i).name);
+			if (l > map_count)
+				break; //stop on last
+		}
+	}
+
+	return list;
 }

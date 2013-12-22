@@ -297,7 +297,7 @@ void CVAR_SaveSettings()
 		snprintf(buffer, 256, "%s = %s\n", "port", server_port);
 		fputs(buffer, f);
 
-		snprintf(buffer, 256, "%s = %s\n", "iwad", iwad_dropdown[iwad_value]);
+		snprintf(buffer, 256, "%s = %s\n", "iwad", wad_iwad_s[wad_iwad_v]);
 		fputs(buffer, f);
 
 		fclose(f);
@@ -352,13 +352,13 @@ void CVAR_LoadSettings()
 
 					server_port = strdup(token.at(2).c_str());
 				} else if (!strcmp(token.at(0).c_str(), "iwad")) {
-					if (iwad_dropdown)
+					if (wad_iwad_s)
 					{
-						for (int i=0; i<max_iwad; i++)
+						for (int i=0; i<wad_iwad_c; i++)
 						{
-							if (!strcasecmp(token.at(2).c_str(), iwad_dropdown[i]))
+							if (!strcasecmp(token.at(2).c_str(), wad_iwad_s[i]))
 							{
-								iwad_value = i;
+								wad_iwad_v = i;
 								break;
 							}
 						}

@@ -6,7 +6,7 @@
 
 int systemf(const char *fmt, ...)
 {
-        char __sys[1024];
+        char __sys[2048];
         int ret_code;
         va_list args;
         va_start(args, fmt);

@@ -15,6 +15,7 @@ typedef struct {
 } wad_header_t;
 
 typedef struct {
+	int active;
 	char *fname;
 	wad_header_t header;
 } wad_t;
@@ -32,14 +33,15 @@ typedef struct {
 	char name[9];
 } map_t;
 
-extern int max_iwad;
-extern int iwad_value;
-extern char **iwad_dropdown;
+extern int wad_iwad_c;
+extern int wad_iwad_v;
+extern char **wad_iwad_s;
 
 void WAD_RebuildPath();
 void WAD_AddPathFmt(char *fmt, ...);
 void WAD_AddPathSeparator(char *waddirs, int separator);
 
 void MAP_MarkMapActive(char *map, char *wad);
+char **MAP_PopulateList(char *wad, int &map_count);
 
 #endif /* WAD_H_ */

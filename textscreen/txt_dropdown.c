@@ -31,6 +31,8 @@
 #include "txt_main.h"
 #include "txt_window.h"
 
+#define TXT_GETTABLEH(num) ((num < 10) ? num : 10)
+
 typedef struct 
 {
     txt_window_t *window;
@@ -53,11 +55,11 @@ static int SelectorWindowY(txt_dropdown_list_t *list)
 
     if (ValidSelection(list))
     {
-        result = list->widget.y - 1 - *list->variable;
+        result = list->widget.y - 1 - TXT_GETTABLEH(*list->variable);
     }
     else
     {
-        result = list->widget.y - 1 - (list->num_values / 2);
+        result = list->widget.y - 1 - TXT_GETTABLEH(list->num_values / 2);
     }
 
     // Keep dropdown inside the screen.
@@ -66,9 +68,9 @@ static int SelectorWindowY(txt_dropdown_list_t *list)
     {
         result = 1;
     }
-    else if (result + list->num_values > (TXT_SCREEN_H - 3))
+    else if (result + TXT_GETTABLEH(list->num_values) > (TXT_SCREEN_H - 3))
     {
-        result = TXT_SCREEN_H - list->num_values - 3;
+        result = TXT_SCREEN_H - TXT_GETTABLEH(list->num_values) - 3;
     }
 
     return result;
@@ -105,7 +107,7 @@ static void FreeCallbackData(TXT_UNCAST_ARG(list),
 
 static int SelectorWindowListener(txt_window_t *window, int key, void *user_data)
 {
-    if (key == KEY_ESCAPE)
+    if (key == KEY_BBUTTON)
     {
         TXT_CloseWindow(window);
         return 1;
@@ -135,11 +137,14 @@ static int SelectorMouseListener(txt_window_t *window, int x, int y, int b,
 static void OpenSelectorWindow(txt_dropdown_list_t *list)
 {
     txt_window_t *window;
+    txt_table_t  *table;
+
     int i;
 
     // Open a simple window with no title bar or action buttons.
 
     window = TXT_NewWindow(NULL);
+    table = TXT_NewTable(1);
 
     TXT_SetWindowAction(window, TXT_HORIZ_LEFT, NULL);
     TXT_SetWindowAction(window, TXT_HORIZ_CENTER, NULL);
@@ -151,6 +156,8 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
     TXT_SetWindowPosition(window, TXT_HORIZ_LEFT, TXT_VERT_TOP,
                           list->widget.x - 2, SelectorWindowY(list));
 
+    TXT_AddWidget(window, TXT_NewScrollPane(0, TXT_GETTABLEH(list->num_values), table));
+
     // Add a button to the window for each option in the list.
 
     for (i=0; i<list->num_values; ++i)
@@ -160,7 +167,7 @@ static void OpenSelectorWindow(txt_dropdown_list_t *list)
 
         button = TXT_NewButton(list->values[i]);
 
-        TXT_AddWidget(window, button);
+        TXT_AddWidget(table, button);
 
         // Callback struct
 
