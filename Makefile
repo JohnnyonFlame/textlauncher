@@ -10,7 +10,7 @@ else
 	CC=gcc
 	CXX=g++
 	
-	INCLUDE=-I/usr/include/SDL -I. -I./textscreen/
+	INCLUDE=-I/usr/include/SDL
 endif
 
 ifeq ($(BUILD), debug)
@@ -23,6 +23,7 @@ endif
 
 LDFLAGS=
 LIBS=-lSDL -lpthread
+INCLUDE +=  -I. -I./textscreen/
 
 SRC_COMMON= textscreen/txt_radiobutton.o \
 			textscreen/txt_window_action.o \
