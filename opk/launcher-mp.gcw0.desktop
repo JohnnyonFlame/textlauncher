@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Odamex (MP)
+Comment=Launch or Join odamex multiplayer games
+Exec=textlauncher-mp
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=odamex_mp
+Categories=games;

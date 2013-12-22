@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Odamex (SP)
+Comment=A doom port focused on Multiplayer gaming
+Exec=textlauncher-sp
+Terminal=false
+Type=Application
+StartupNotify=true
+Icon=odamex_sp
+Categories=games;
