@@ -274,7 +274,7 @@ void CVAR_SaveSettings()
 
 				while (*itr != '\0')
 				{
-					*itr = tolower(*itr);
+					*itr = (char) tolower((unsigned char) *itr);
 					itr ++;
 				}
 

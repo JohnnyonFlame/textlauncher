@@ -503,7 +503,7 @@ static int TranslateKey(SDL_keysym *sym)
             case SDLK_KP_ENTER:    return KEYP_ENTER;
 
             default:
-                return tolower(sym->sym);
+                return tolower((unsigned char) sym->sym);
         }
     }
 }
@@ -728,7 +728,7 @@ void TXT_GetKeyDescription(int key, char *buf)
     }
     else if (isprint(key))
     {
-        sprintf(buf, "%c", toupper(key));
+        sprintf(buf, "%c", (char) toupper((unsigned char) key));
     }
     else
     {

@@ -78,7 +78,8 @@ static int TXT_WindowActionKeyPress(TXT_UNCAST_ARG(action), int key)
 {
     TXT_CAST_ARG(txt_window_action_t, action);
 
-    if ((key == action->key) || (key < 128 && tolower(key) == tolower((unsigned char)action->key)))
+    if ((key == action->key) || ((unsigned) key < 128 && \
+					tolower((unsigned char) key) == tolower((unsigned char) action->key)))
     {
         TXT_EmitSignal(action, "pressed");
         return 1;
