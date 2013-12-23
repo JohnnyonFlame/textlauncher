@@ -153,5 +153,6 @@
 
 #define KEY_ABUTTON KEY_RCTRL
 #define KEY_BBUTTON KEY_RALT
+#define KEY_YBUTTON KEY_SPACE
 
 #endif	// __DOOMKEYS_H__

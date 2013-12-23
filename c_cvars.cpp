@@ -14,10 +14,10 @@ static txt_window_t* window;
 
 void CVAR_NewDialog(TXT_UNCAST_ARG(widget), void *user_data)
 {
-	TXT_CAST_ARG(txt_button_t, widget);
-	txt_window_t* dialog = TXT_NewWindow(widget->label);
+	cvar_t* cvar = (cvar_t*)user_data;
+	txt_window_t* dialog = TXT_NewWindow(cvar->name);
 
-	if (strlen((char*)user_data) > 0)
+	if (strlen(cvar->descript) > 0)
 	{
 		/*
 		 * forces the text to fit inside the limit of sizeof(buffer),
@@ -27,7 +27,7 @@ void CVAR_NewDialog(TXT_UNCAST_ARG(widget), void *user_data)
 		int n = 0;
 		char *head;
 
-		for (head = (char*)user_data;; head++)
+		for (head = (char*)cvar->descript;; head++)
 		{
 			char c = *head;
 
@@ -107,13 +107,19 @@ void CVAR_MenuFromList(TXT_UNCAST_ARG(widget), void *user_data)
 	int i;
 	for (i=0; cvar_list[i].name != 0x0; i++)
 	{
+		txt_inputbox_t *input;
 		char buffer[32];
 		snprintf(buffer, 32, "%s: ", cvar_list[i].name);
 
-		TXT_AddWidgets(table, TXT_NewButton2(buffer, CVAR_NewDialog, cvar_list[i].descript), TXT_NewInputBox(&cvar_list[i].def_val, 32), NULL);
+		TXT_AddWidgets(table, TXT_NewLabel(buffer), input = TXT_NewInputBox(&cvar_list[i].def_val, 32), NULL);
+		TXT_SignalConnect(input, "descript", CVAR_NewDialog, &cvar_list[i]);
 	}
 
 	TXT_AddWidget(window, TXT_NewScrollPane(0, (i < 10) ? i : 10,table));
+
+	txt_window_action_t* act;
+	TXT_SignalConnect(act = TXT_NewWindowAction(KEY_YBUTTON, "Description"), "pressed", NULL, NULL);
+	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, act);
 }
 
 static void CVAR_SaveCvars(char *file, ...)

@@ -321,6 +321,11 @@ static int TXT_InputBoxKeyPress(TXT_UNCAST_ARG(inputbox), int key)
 
     if (!inputbox->editing)
     {
+        if (key == KEY_YBUTTON)
+        {
+        	TXT_EmitSignal(inputbox, "descript");
+        	return 1;
+        }
         if (key == KEY_ABUTTON)
         {
             StartEditing(inputbox);
