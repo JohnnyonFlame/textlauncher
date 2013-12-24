@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
+#include <sys/stat.h>
 #include <vector>
 #include <string>
 
@@ -315,6 +316,9 @@ void CVAR_LoadSettings()
 {
 	FILE *f;
 	char f_name[4096];
+
+	snprintf(f_name, 4096, "%s%s", getenv("HOME"), "/.odamex");
+	mkdir(f_name, 0755);
 
 	snprintf(f_name, 4096, "%s%s", getenv("HOME"), "/.odamex/l_odasrv.cfg");
 	CVAR_LoadCvars(f_name, sv_gameplay_cvars, sv_misc_cvars, NULL);
