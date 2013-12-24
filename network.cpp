@@ -433,7 +433,7 @@ void NET_ManualMenu(TXT_UNCAST_ARG(widget), void *user_data) {
 	TXT_AddWidget(window, table);
 
 	txt_window_action_t* act;
-	TXT_SignalConnect(act = TXT_NewWindowAction(KEY_SPACE, "Join"), "pressed", action_manualdiscovery, NULL);
+	TXT_SignalConnect(act = TXT_NewWindowAction(KEY_ENTER, "Join"), "pressed", action_manualdiscovery, NULL);
 	TXT_SetWindowAction(window, TXT_HORIZ_CENTER, act);
 }
 
