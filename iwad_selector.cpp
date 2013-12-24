@@ -45,7 +45,7 @@ void IWAD_FinishAdvMenu(TXT_UNCAST_ARG(widget), void *user_data)
 	strconcat(buffer, 1024, "./odamex -iwad %s", iwad_lastiwad);
 
 	if (iwad_warp_v)
-		strconcat(buffer, 1024, " -warp %i", iwad_warp_v);
+		strconcat(buffer, 1024, " +map %s", iwad_warp_s[iwad_warp_v]);
 
 	strconcat(buffer, 1024, " -skill %i", iwad_skill_v+1);
 	if (iwad_nomonsters_v)
